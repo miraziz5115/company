@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use App\Models\Person;
+use App\Models\Address;
+use Auth;
 
 class PersonController extends Controller
 {
@@ -13,7 +17,11 @@ class PersonController extends Controller
      */
     public function index()
     {
-        //
+        $persons = Person::all();
+
+        return view('person.index',[
+            'persons' => $persons,
+        ]);
     }
 
     /**
@@ -23,7 +31,7 @@ class PersonController extends Controller
      */
     public function create()
     {
-        //
+        return view('person.create');
     }
 
     /**
@@ -34,7 +42,39 @@ class PersonController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $input = $request->all();
+        $validate = Validator::make($input, [
+            'fullname' => 'required|max:255',
+            'birthdate' => 'required',
+            'city' => 'required',
+            'region' => 'required',
+            'street' => 'required',
+            'home' => 'required'
+        ]);
+
+        if ($validate->fails()){
+            return back()->withErrors($validate)->withInput();
+        }else{
+            $person = Person::create([
+                'fullname' => $input['fullname'],
+                'birthdate' => $input['birthdate'],
+                'email' => $input['email'],
+            ]);
+          
+
+            $address = Address::create([
+                'city' => $input['city'],
+                'region' => $input['region'],
+                'street' => $input['street'],
+                'home' => $input['home'],
+                'person_id' => $person->id
+            ]);
+            
+            if( $address ){
+                return redirect()->route('person.index');
+            }
+           
+        }
     }
 
     /**
