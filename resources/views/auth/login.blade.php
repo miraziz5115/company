@@ -43,7 +43,7 @@
                   <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Логин') }}</label>
 
                   <div class="col-md-6">
-                      <input id="email" type="text" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="off" autofocus>
+                      <input id="login" type="text" class="form-control @error('login') is-invalid @enderror" name="login" value="{{ old('login') }}" required autocomplete="off" autofocus>
 
                       @error('login')
                           <span class="invalid-feedback" role="alert">

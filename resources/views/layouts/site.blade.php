@@ -76,7 +76,7 @@
 
               <div class="profile_pic">
 
-                <img src="{{ Auth::user()->avatar ?? asset('public/images/no-avatar.png')}}" alt="..." class="img-circle profile_img">
+                <img src="{{ Auth::user()->avatar ?? asset('public/site/images/no-avatar.png')}}" alt="..." class="img-circle profile_img">
 
               </div>
 
@@ -107,9 +107,9 @@
                 <ul class="nav side-menu">
 
                   <li><a href="javascript:void(0)">Главная</a></li>
-                  <li><a href="javascript:void(0)">Мои Посты</a></li>
-                  <li><a href="javascript:void(0)">Мои друзья</a></li>
-                  <li><a href="javascript:void(0)">Пользователи</a></li>
+                  <li><a href="javascript:void(0)">Компании</a></li>
+                  <li><a href="javascript:void(0)">Персональ</a></li>
+                  
 
                  
 
@@ -183,7 +183,7 @@
 
                   <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
 
-                    <img src="{{ Auth::user()->avatar ?? asset('public/images/no-avatar.png') }}" alt="">{{ Auth::user()->name }}
+                    <img src="{{ Auth::user()->avatar ?? asset('public/site/images/no-avatar.png') }}" alt="">{{ Auth::user()->name }}
 
                     <span class=" fa fa-angle-down"></span>
 
