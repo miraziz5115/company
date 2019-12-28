@@ -21,6 +21,9 @@ Route::group([
 	'middleware' => 'auth'
 ], function(){
 	Route::get('dashboard', 'HomeController@index')->name('home');
+	Route::resource('company', 'CompanyController');
+	Route::resource('person', 'PersonController');
+	Route::resource('address', 'AddressController');
 
 });
 

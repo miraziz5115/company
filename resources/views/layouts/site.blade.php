@@ -107,8 +107,8 @@
                 <ul class="nav side-menu">
 
                   <li><a href="javascript:void(0)">Главная</a></li>
-                  <li><a href="javascript:void(0)">Компании</a></li>
-                  <li><a href="javascript:void(0)">Персональ</a></li>
+                  <li><a href="{{ route('company.index')}}">Компании</a></li>
+                  <li><a href="{{ route('person.index')}}">Персонал</a></li>
                   
 
                  
