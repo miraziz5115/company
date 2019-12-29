@@ -24,6 +24,7 @@ Route::group([
 	Route::resource('company', 'CompanyController');
 	Route::resource('person', 'PersonController');
 	Route::resource('address', 'AddressController');
+	Route::post('company/default_person','CompanyController@default_person')->name('default_person');
 
 });
 

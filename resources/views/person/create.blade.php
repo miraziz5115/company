@@ -10,7 +10,7 @@
                 <h2>{{ __('Добавление персонал') }}</h2>
                 <div class="clearfix"></div>
             </div>
-            <div class="col-sm-12 col-md-4" style="">
+            <div class="col-sm-12 col-md-12" style="">
                 <div class="card">
                     <div class="card-body">
                         <form method="POST" action="{{ route('person.store') }}">
@@ -76,6 +76,20 @@
                                     <input type="text" name="home" class="form-control" id="home" required value="{{ old('home')}}"  autocomplete="off">
                                     @if( $errors->has('home'))
                                         <span class="text-danger">{{ $errors->first('home') }}</span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="company_id" class="col-md-4 col-form-label text-md-right">{{ __('Компания') }}</label>
+                                <div class="col-md-6">
+                                    <select name="company_id" class="form-control" required>
+                                        <option selected disabled>Выберите</option>
+                                    @foreach( App\Models\Company::all() as $company )
+                                        <option value="{{ $company->id }}">{{ $company->name }}</option>
+                                    @endforeach
+                                    </select>
+                                    @if( $errors->has('company_id'))
+                                        <span class="text-danger">{{ $errors->first('company_id') }}</span>
                                     @endif
                                 </div>
                             </div>

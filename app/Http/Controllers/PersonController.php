@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Person;
 use App\Models\Address;
+use App\Models\Company;
 use Auth;
 
 class PersonController extends Controller
@@ -49,7 +50,8 @@ class PersonController extends Controller
             'city' => 'required',
             'region' => 'required',
             'street' => 'required',
-            'home' => 'required'
+            'home' => 'required',
+            'company_id' => 'required',
         ]);
 
         if ($validate->fails()){
@@ -59,8 +61,12 @@ class PersonController extends Controller
                 'fullname' => $input['fullname'],
                 'birthdate' => $input['birthdate'],
                 'email' => $input['email'],
+                'company_id' => $input['company_id'],
             ]);
-          
+            
+            // $company = Company::find($input['company_id']);
+            // $company->default_person = $person->id;
+            // $company->save();
 
             $address = Address::create([
                 'city' => $input['city'],
@@ -96,7 +102,10 @@ class PersonController extends Controller
      */
     public function edit($id)
     {
-        //
+        $person = Person::find($id);
+        return view('person.edit',[
+            'person' => $person,
+        ]);
     }
 
     /**
@@ -108,7 +117,40 @@ class PersonController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $input = $request->all();
+        $validate = Validator::make($input, [
+            'fullname' => 'required|max:255',
+            'birthdate' => 'required',
+            'city' => 'required',
+            'region' => 'required',
+            'street' => 'required',
+            'home' => 'required',
+            'company_id' => 'required',
+        ]);
+
+        if ($validate->fails()){
+            return back()->withErrors($validate)->withInput();
+        }else{
+            $person = Person::find($id)->update([
+                'fullname'   => $input['fullname'],
+                'birthdate'  => $input['birthdate'],
+                'email'      => $input['email'],
+                'company_id' => $input['company_id']
+
+            ]);
+
+            $address = Address::where('person_id', $id)->update([
+                'city'   => $input['city'],
+                'region' => $input['region'],
+                'street' => $input['street'],
+                'home'   => $input['home']
+
+            ]);
+
+            if($address){
+                return redirect()->route('person.index');
+            }
+        }
     }
 
     /**

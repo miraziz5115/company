@@ -42,6 +42,7 @@ class CompanyController extends Controller
     {
         $validate = Validator::make($request->all(), [
             'name' => 'required|max:255',
+           // 'person_id' => 'required',
         ]);
 
         if ($validate->fails()){
@@ -49,6 +50,7 @@ class CompanyController extends Controller
         }else{
             $model = new Company;
             $model->name = $request->all()['name'];
+        //  $model->default_person = $request->all()['person_id'];
             if( $model->save()){
                 return redirect()->route('company.index');
             }
@@ -74,7 +76,10 @@ class CompanyController extends Controller
      */
     public function edit($id)
     {
-        //
+        $company = Company::find($id);
+        return view('company.edit',[
+            'company' => $company,
+        ]);
     }
 
     /**
@@ -86,7 +91,21 @@ class CompanyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validate = Validator::make($request->all(), [
+            'name' => 'required|max:255',
+           // 'person_id' => 'required',
+        ]);
+
+        if ($validate->fails()){
+            return back()->withErrors($validate)->withInput();
+        }else{
+            $company = Company::find($id);
+            $company->name = $request->all()['name'];
+            // $company->default_person = $request->all()['default_person_id'];
+            if( $company->save()){
+                return redirect()->back();
+            }
+        }
     }
 
     /**
@@ -98,5 +117,16 @@ class CompanyController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function default_person(Request $request )
+    {
+        if($request->ajax()){
+            $company = Company::find( $request->all()['company_id']);
+            $company->default_person = $request->all()['person_id'];
+            if($company->save()){
+                return response()->json();
+            }
+        }
     }
 }

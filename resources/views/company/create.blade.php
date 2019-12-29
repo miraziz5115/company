@@ -10,13 +10,13 @@
                 <h2>{{ __('Добавление компании') }}</h2>
                 <div class="clearfix"></div>
             </div>
-            <div class="col-sm-12 col-md-4" style="">
+            <div class="col-sm-12 col-md-12" style="">
                 <div class="card">
                     <div class="card-body">
                         <form method="POST" action="{{ route('company.store') }}">
                             @csrf
                             <div class="form-group row">
-                                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Chiqish vaqti') }}</label>
+                                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Название компания') }}</label>
                                 <div class="col-md-6">
                                     <input type="text" name="name" class="form-control" id="name" required value="{{ old('name')}}"  autocomplete="off">
                                     @if( $errors->has('name'))
@@ -24,6 +24,22 @@
                                     @endif
                                 </div>
                             </div>
+                        {{--
+                            <div class="form-group row">
+                                <label for="person_id" class="col-md-4 col-form-label text-md-right">{{ __('Контактное лицо по умолчанию') }}</label>
+                                <div class="col-md-6">
+                                    <select name="person_id" class="form-control" required>
+                                        <option selected disabled>Выберите</option>
+                                    @foreach( App\Models\Person::all() as $person )
+                                        <option value="{{ $person->id }}">{{ $person->fullname }}</option>
+                                    @endforeach
+                                    </select>
+                                    @if( $errors->has('person_id'))
+                                        <span class="text-danger">{{ $errors->first('person_id') }}</span>
+                                    @endif
+                                </div>
+                            </div>
+--}}
 
                             <div class="form-group row mb-0">
                                 <div class="col-md-6 offset-md-4">

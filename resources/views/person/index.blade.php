@@ -18,6 +18,7 @@
                     <th>Район</th>
                     <th>Улица</th>
                     <th>Квартира</th>
+                    <th></th>
         		</tr>
         		@php $i = 1 @endphp
         		@foreach( $persons as $person )
@@ -30,6 +31,7 @@
                         <td>{{ $person->address['region'] }}</td>
                         <td>{{ $person->address['street'] }}</td>
                         <td>{{ $person->address['home'] }}</td>
+                        <td><a href="{{ route('person.edit', $person->id) }}"><i class="fa fa-pencil"></i></a></td>
         			</tr>
                     @php $i++ @endphp
         		@endforeach
