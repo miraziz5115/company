@@ -37,7 +37,7 @@
                             <div class="form-group row">
                                 <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-mail') }}</label>
                                 <div class="col-md-6">
-                                    <input type="email" name="email" class="form-control" id="email" required value="{{ old('email')}}"  autocomplete="off">
+                                    <input type="email" name="email" class="form-control" id="email"  value="{{ old('email')}}"  autocomplete="off">
                                     @if( $errors->has('email'))
                                         <span class="text-danger">{{ $errors->first('email') }}</span>
                                     @endif

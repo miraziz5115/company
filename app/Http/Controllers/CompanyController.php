@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Company;
+use App\Models\Person;
 use Auth;
 
 class CompanyController extends Controller
@@ -116,7 +117,18 @@ class CompanyController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $company = Company::find($id);
+        $personsOfCompany = Person::where('company_id', $id)->get();
+        if( $personsOfCompany->count() > 0){
+            foreach ($personsOfCompany as $value) {
+                $value->company_id = null;
+                $value->save();
+            }
+
+        }
+        if( $company->delete()){
+            return response()->json();
+        }
     }
 
     public function default_person(Request $request )

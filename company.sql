@@ -1,15 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 4.6.6deb5
 -- https://www.phpmyadmin.net/
 --
--- Хост: localhost
--- Время создания: Дек 28 2019 г., 15:07
--- Версия сервера: 8.0.12
--- Версия PHP: 7.2.7
+-- Хост: localhost:3306
+-- Время создания: Дек 29 2019 г., 23:55
+-- Версия сервера: 5.7.28-0ubuntu0.19.04.2
+-- Версия PHP: 7.2.24-0ubuntu0.19.04.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -35,7 +33,8 @@ CREATE TABLE `address` (
   `street` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `home` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `person_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -51,13 +50,6 @@ CREATE TABLE `company` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Дамп данных таблицы `company`
---
-
-INSERT INTO `company` (`id`, `name`, `default_person`, `created_at`, `updated_at`) VALUES
-(1, 'Miraziz', NULL, '2019-12-28 12:05:47', '2019-12-28 12:05:47');
 
 -- --------------------------------------------------------
 
@@ -94,9 +86,13 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (1, '2014_10_12_000000_create_users_table', 1),
 (2, '2014_10_12_100000_create_password_resets_table', 1),
 (3, '2019_08_19_000000_create_failed_jobs_table', 1),
-(4, '2019_12_28_134605_create_company_table', 2),
-(5, '2019_12_28_135031_create_person_table', 3),
-(6, '2019_12_28_135045_create_address_table', 3);
+(4, '2019_12_28_134605_create_company_table', 1),
+(5, '2019_12_28_135031_create_person_table', 1),
+(6, '2019_12_28_135045_create_address_table', 1),
+(7, '2019_12_28_192347_add_person_id_to_address_table', 2),
+(8, '2019_12_28_193701_drop_column_person_table_address_id', 3),
+(9, '2019_12_29_042359_add_company_id_to_person_table', 4),
+(10, '2019_12_29_105014_modify_default_person_colunm', 5);
 
 -- --------------------------------------------------------
 
@@ -121,9 +117,9 @@ CREATE TABLE `person` (
   `fullname` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `birthdate` date NOT NULL,
   `email` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address_id` int(11) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `company_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -149,7 +145,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `login`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Usmanov Miraziz', 'miraziz', 'miraziz@rambler.ru', NULL, '$2y$10$yeJNjRNaTeko7QilZLdmEu79JfGPdv19ZhrC/LaI/qyLJ4Nkjh.Yq', NULL, '2019-12-28 10:09:25', '2019-12-28 10:09:25');
+(1, 'Usmanov Miraziz', 'admin', 'admin@admin.uz', NULL, '$2y$10$1k4w5V7L2yUDfdmQbG31Y.fV.EupCjc3fxpvJ0mIpgvJuwHNSXCRC', NULL, '2019-12-28 13:00:16', '2019-12-28 13:00:16');
 
 --
 -- Индексы сохранённых таблиц
@@ -207,38 +203,31 @@ ALTER TABLE `users`
 --
 ALTER TABLE `address`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT для таблицы `company`
 --
 ALTER TABLE `company`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT для таблицы `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT для таблицы `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT для таблицы `person`
 --
 ALTER TABLE `person`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
-
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-COMMIT;
-
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

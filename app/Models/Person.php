@@ -18,4 +18,12 @@ class Person extends Model
     function address(){
     	return $this->hasOne('App\Models\Address');
     }
+
+    function company(){
+        return $this->belongsTo('App\Models\Company',  'id','default_person');
+    }
+
+    function companyName(){
+        return $this->belongsTo('App\Models\Company','company_id', 'id');
+    }
 }

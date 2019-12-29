@@ -113,7 +113,6 @@
 
 @endsection
 
-<script src="{{ asset('public/site/js/jquery-3.4.1.min.js')}}"></script>  
 
 
 

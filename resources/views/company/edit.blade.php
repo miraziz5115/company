@@ -1,13 +1,10 @@
 @extends('layouts.site')
-
 @section('content')
-
 <div class="right_col" role="main">
-
     <div class="row justify-content-center">
         <div class="x_panel">
             <div class="x_title">
-                <h2>{{ __('Добавление компании') }}</h2>
+                <h2>{{ __('Редактирование компании') }}</h2>
                 <div class="clearfix"></div>
             </div>
             <div class="col-sm-12 col-md-12" style="">
@@ -29,27 +26,10 @@
                                         {{ __('Изменить') }}
                                     </button>
                                 </div>
-
                             </div>
-                            
                         </form>
-
-                        {{--    <div class="form-group row">
-                                <label for="default_person_id" class="col-md-4 col-form-label text-md-right">{{ __('Контактное лицо по умолчанию') }}</label>
-                                <div class="col-md-6">
-                                    <select name="default_person_id" class="form-control" required>
-                                        <option selected disabled>{{ $company->defaultPerson['fullname'] ?? 'Выберите'}}</option>
-                                    @foreach( App\Models\Person::all() as $person )
-                                        <option value="{{ $person->id }}">{{ $person->fullname }}</option>
-                                    @endforeach
-                                    </select>
-                                    @if( $errors->has('default_person_id'))
-                                        <span class="text-danger">{{ $errors->first('default_person_id') }}</span>
-                                    @endif
-                                </div>
-                            </div>
-                        --}}
                         <h2>Контактное лицо по умолчанию</h2>
+                        @if( count($company->persons ) > 0)
                             <table class="table table-bordered">
                             <tr>
                                 <th width="10">№</th>
@@ -78,6 +58,9 @@
                                 @endif
                             @endforeach
                         </table>
+                        @else
+                            Нет данных
+                        @endif
                         <h2>Сотрудники компании</h2>
                         <table class="table table-bordered">
                             <tr>
@@ -108,23 +91,20 @@
                                     @php $i++ @endphp
                                 @endif
                             @endforeach
-                            
                         </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
-
 <script src="{{ asset('public/site/js/jquery-3.4.1.min.js')}}"></script>  
 <script>
     $('.default_person').click(function(){
         var company_id = $('#name').data('id');
         var person_id = $(this).data('id');
         $.ajax({
-            url: '{{ route("default_person") }}',
+            url: '{{ route("default_person") ?? null }}',
             method: 'POST',
             headers:{
                 'X-CSRF-TOKEN':'{{ csrf_token()}}',
@@ -137,12 +117,7 @@
                 location.reload();
             },
         });
-
     });
 </script>
-
-
-
-
 @endsection
            

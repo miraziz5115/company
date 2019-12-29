@@ -64,9 +64,12 @@ class PersonController extends Controller
                 'company_id' => $input['company_id'],
             ]);
             
-            // $company = Company::find($input['company_id']);
-            // $company->default_person = $person->id;
-            // $company->save();
+            $company = Company::where([ 'id'=> $input['company_id'], 'default_person' => null])->first();
+            
+            if( $company){
+                $company->default_person = $person->id;
+                $company->save();
+            }
 
             $address = Address::create([
                 'city' => $input['city'],
@@ -117,6 +120,7 @@ class PersonController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         $input = $request->all();
         $validate = Validator::make($input, [
             'fullname' => 'required|max:255',
@@ -127,29 +131,36 @@ class PersonController extends Controller
             'home' => 'required',
             'company_id' => 'required',
         ]);
-
+        
         if ($validate->fails()){
             return back()->withErrors($validate)->withInput();
         }else{
-            $person = Person::find($id)->update([
-                'fullname'   => $input['fullname'],
-                'birthdate'  => $input['birthdate'],
-                'email'      => $input['email'],
-                'company_id' => $input['company_id']
+            $person = Person::find($id);
+            $person->fullname = $input['fullname'];
+            $person->birthdate = $input['birthdate'];
+            $person->email = $input['email'];
+            $person->company_id = $input['company_id'];
+            
+            $person->address['city']  = $input['city'];
+            $person->address['region'] = $input['region'];
+            $person->address['street'] = $input['street'];
+            $person->address['home']  = $input['home'];
+            
+            if($person->save() && $person->address->save()){
+                $company = Company::where('default_person', $id)->first();
 
-            ]);
-
-            $address = Address::where('person_id', $id)->update([
-                'city'   => $input['city'],
-                'region' => $input['region'],
-                'street' => $input['street'],
-                'home'   => $input['home']
-
-            ]);
-
-            if($address){
+                if( !empty($company) ){
+                    $company->default_person = null;
+                    $company->save();
+                }else{
+                    if( Company::where([ 'id' => $input['company_id'], 'default_person' => null ])->first()){
+                        Company::find( $input['company_id'])->update(['default_person' => $id]);
+                    }
+                }
                 return redirect()->route('person.index');
             }
+
+            
         }
     }
 
@@ -161,6 +172,12 @@ class PersonController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $person = Person::find($id);
+        if( $person->companyName['default_person'] == $id ){
+            $person->companyName['default_person'] = null;
+        }
+        if( $person->address->delete() && $person->companyName->save() && $person->delete() ){
+            return response()->json();
+        }
     }
 }

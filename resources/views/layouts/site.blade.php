@@ -106,7 +106,7 @@
 
                 <ul class="nav side-menu">
 
-                  <li><a href="javascript:void(0)">Главная</a></li>
+                  <li><a href="{{ route('dashboard')}}">Главная</a></li>
                   <li><a href="{{ route('company.index')}}">Компании</a></li>
                   <li><a href="{{ route('person.index')}}">Персонал</a></li>
                   
@@ -191,15 +191,7 @@
 
                   <ul class="dropdown-menu dropdown-usermenu pull-right">
 
-                    
-
-                    <li>
-
-                      <a href="javascript:void(0)"><span>Профиль</span></a>
-
-                    </li>
-
-                    
+                                     
 
                     <li><a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();"><i class="fa fa-sign-out pull-right"></i>{{ __('Выход') }}</a></li>
 
